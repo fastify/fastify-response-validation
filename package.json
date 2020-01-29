@@ -1,7 +1,7 @@
 {
   "name": "fastify-response-validation",
   "version": "0.1.0",
-  "description": "",
+  "description": "A simple plugin that enables response validation for Fastify.",
   "main": "index.js",
   "dependencies": {
     "ajv": "^6.11.0",
