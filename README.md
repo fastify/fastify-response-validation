@@ -62,5 +62,33 @@ fastify.register(require('fastify-response-validation'), {
 })
 ```
 
+By default the response validation is enabled on every route that has a response schema defined, if needed, you can disable it all together with `responseValidation: false`:
+```js
+fastify.register(require('fastify-response-validation'), {
+  responseValidation: false
+})
+```
+Or you can disable a specific route with the same option:
+```js
+fastify.route({
+  method: 'GET',
+  path: '/',
+  responseValidation: false,
+  schema: {
+    response: {
+      '2xx': {
+        type: 'object',
+        properties: {
+          answer: { type: 'number' }
+        }
+      }
+    }
+  },
+  handler: async (req, reply) => {
+    return { answer: '42' }
+  }
+})
+```
+
 ## License
 [MIT](./LICENSE)
