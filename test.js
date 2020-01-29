@@ -100,3 +100,66 @@ test('Override default ajv options', async t => {
   t.is(response.statusCode, 200)
   t.deepEqual(JSON.parse(response.payload), { answer: 42 })
 })
+
+test('Disable response validation for a specific route', async t => {
+  const fastify = Fastify()
+  fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    path: '/',
+    responseValidation: false,
+    schema: {
+      response: {
+        '2xx': {
+          type: 'object',
+          properties: {
+            answer: { type: 'number' }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: '42' }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    path: '/'
+  })
+
+  t.is(response.statusCode, 200)
+  t.deepEqual(JSON.parse(response.payload), { answer: 42 })
+})
+
+test('Disable response validation for every route', async t => {
+  const fastify = Fastify()
+  fastify.register(plugin, { responseValidation: false })
+
+  fastify.route({
+    method: 'GET',
+    path: '/',
+    schema: {
+      response: {
+        '2xx': {
+          type: 'object',
+          properties: {
+            answer: { type: 'number' }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: '42' }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    path: '/'
+  })
+
+  t.is(response.statusCode, 200)
+  t.deepEqual(JSON.parse(response.payload), { answer: 42 })
+})
