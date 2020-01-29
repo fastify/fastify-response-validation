@@ -1,5 +1,8 @@
 # fastify-response-validation
 
+![Node.js CI](https://github.com/fastify/fastify-response-validation/workflows/Node.js%20CI/badge.svg)  [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+
+
 A simple plugin that enables response validation for Fastify.  
 The use of this plugin will slow down your overall performances, so we suggest using it only during development.
 
@@ -46,7 +49,7 @@ fastify.inject({
 If you want to override the default [ajv](https://www.npmjs.com/package/ajv) configuration, you can do that by using the `ajv` option.
 ```js
 // Default configuration:
-//     coerceTypes: false
+//    coerceTypes: false
 //    useDefaults: true
 //    removeAdditional: true
 //    allErrors: true
