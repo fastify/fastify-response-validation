@@ -12,9 +12,12 @@ function validateResponse (fastify, opts, next) {
     nullable: true
   }, opts.ajv))
 
-  fastify.addHook('onRoute', onRoute)
+  if (opts.responseValidation !== false) {
+    fastify.addHook('onRoute', onRoute)
+  }
 
   function onRoute (opts) {
+    if (opts.responseValidation === false) return
     if (opts.schema && opts.schema.response) {
       opts.preSerialization = opts.preSerialization || []
       opts.preSerialization.push(buildHook(opts.schema.response))
