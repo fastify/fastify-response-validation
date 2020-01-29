@@ -60,4 +60,7 @@ function schemaErrorsText (errors) {
   return text.slice(0, -separator.length)
 }
 
-module.exports = fp(validateResponse)
+module.exports = fp(validateResponse, {
+  fastify: '>=2.0.0',
+  name: 'fastify-response-validation'
+})
