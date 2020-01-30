@@ -1,0 +1,35 @@
+{
+  "name": "fastify-response-validation",
+  "version": "0.1.0",
+  "description": "A simple plugin that enables response validation for Fastify.",
+  "main": "index.js",
+  "dependencies": {
+    "ajv": "^6.11.0",
+    "fastify-plugin": "^1.6.0"
+  },
+  "devDependencies": {
+    "ava": "^3.1.0",
+    "fastify": "^2.11.0",
+    "standard": "^14.3.1"
+  },
+  "scripts": {
+    "test": "standard && ava -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fastify/fastify-response-validation.git"
+  },
+  "keywords": [
+    "fastify",
+    "validation",
+    "response",
+    "json",
+    "schema"
+  ],
+  "author": "Tomas Della Vedova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fastify/fastify-response-validation/issues"
+  },
+  "homepage": "https://github.com/fastify/fastify-response-validation#readme"
+}
