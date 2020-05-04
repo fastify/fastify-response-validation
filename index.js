@@ -61,6 +61,6 @@ function schemaErrorsText (errors) {
 }
 
 module.exports = fp(validateResponse, {
-  fastify: '>=2.0.0',
+  fastify: '>=3.0.0',
   name: 'fastify-response-validation'
 })
