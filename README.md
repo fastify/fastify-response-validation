@@ -1,10 +1,12 @@
 # fastify-response-validation
 
-![Node.js CI](https://github.com/fastify/fastify-response-validation/workflows/Node.js%20CI/badge.svg)  [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
-
+![CI](https://github.com/fastify/fastify-response-validation/workflows/CI/badge.svg)
+[![NPM version](https://img.shields.io/npm/v/fastify-response-validation.svg?style=flat)](https://www.npmjs.com/package/fastify-response-validation)
+[![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-response-validation/badge.svg)](https://snyk.io/test/github/fastify/fastify-response-validation)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A simple plugin that enables response validation for Fastify.  
-The use of this plugin will slow down your overall performances, so we suggest using it only during development.
+The use of this plugin will slow down your overall performance, so we suggest using it only during development.
 
 ## Install
 ```
@@ -12,8 +14,7 @@ npm i fastify-response-validation
 ```
 
 ## Usage
-You just need to register the plugin and you will have response validation enabled.
-
+You just need to register the plugin and you will have response validation enabled:
 ```js
 const fastify = require('fastify')()
 
@@ -46,7 +47,7 @@ fastify.inject({
 })
 ```
 
-If you want to override the default [ajv](https://www.npmjs.com/package/ajv) configuration, you can do that by using the `ajv` option.
+If you want to override the default [ajv](https://www.npmjs.com/package/ajv) configuration, you can do that by using the `ajv` option:
 ```js
 // Default configuration:
 //    coerceTypes: false
@@ -68,7 +69,8 @@ fastify.register(require('fastify-response-validation'), {
   responseValidation: false
 })
 ```
-Or you can disable a specific route with the same option:
+
+Alternatively, you can disable a specific route with the same option:
 ```js
 fastify.route({
   method: 'GET',
