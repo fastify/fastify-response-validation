@@ -10,7 +10,7 @@
   "devDependencies": {
     "ava": "^3.1.0",
     "fastify": "^3.14.2",
-    "standard": "^14.3.1"
+    "standard": "^16.0.3"
   },
   "scripts": {
     "test": "standard && ava -v"
