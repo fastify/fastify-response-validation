@@ -63,7 +63,7 @@ fastify.register(require('fastify-response-validation'), {
 })
 ```
 
-By default the response validation is enabled on every route that has a response schema defined, if needed, you can disable it all together with `responseValidation: false`:
+By default the response validation is enabled on every route that has a response schema defined. If needed you can disable it all together with `responseValidation: false`:
 ```js
 fastify.register(require('fastify-response-validation'), {
   responseValidation: false
