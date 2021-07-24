@@ -33,11 +33,11 @@ function validateResponse (fastify, opts, next) {
     return preSerialization
 
     function preSerialization (req, reply, payload, next) {
-      var validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
+      const validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
       if (validate !== undefined) {
-        var valid = validate(payload)
+        const valid = validate(payload)
         if (!valid) {
-          var err = new Error(schemaErrorsText(validate.errors))
+          const err = new Error(schemaErrorsText(validate.errors))
           err.validation = validate.errors
           reply.code(500)
           return next(err)
@@ -51,10 +51,11 @@ function validateResponse (fastify, opts, next) {
 }
 
 function schemaErrorsText (errors) {
-  var text = ''
-  var separator = ', '
+  let text = ''
+  const separator = ', '
+  // eslint-disable-next-line no-var -- keep var for performance reasons
   for (var i = 0; i < errors.length; i++) {
-    var e = errors[i]
+    const e = errors[i]
     text += 'response' + (e.dataPath || '') + ' ' + e.message + separator
   }
   return text.slice(0, -separator.length)
