@@ -27,7 +27,10 @@ function validateResponse (fastify, opts, next) {
   function buildHook (schema) {
     const statusCodes = {}
     for (const statusCode in schema) {
-      statusCodes[statusCode] = ajv.compile(schema[statusCode])
+      const responseSchema = schema[statusCode]
+      statusCodes[statusCode] = ajv.compile(
+        getSchemaAnyway(responseSchema)
+      )
     }
 
     return preSerialization
@@ -48,6 +51,22 @@ function validateResponse (fastify, opts, next) {
   }
 
   next()
+}
+
+/**
+ * Copy-paste of getSchemaAnyway from fastify
+ *
+ * https://github.com/fastify/fastify/blob/23371945d01c270af24f4a5b7e2e31c4e806e6b3/lib/schemas.js#L113
+ */
+function getSchemaAnyway (schema) {
+  if (schema.$ref || schema.oneOf || schema.allOf || schema.anyOf || schema.$merge || schema.$patch) return schema
+  if (!schema.type && !schema.properties) {
+    return {
+      type: 'object',
+      properties: schema
+    }
+  }
+  return schema
 }
 
 function schemaErrorsText (errors) {

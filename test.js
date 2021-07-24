@@ -39,6 +39,38 @@ test('Should return a validation error', async t => {
   })
 })
 
+test('Should support shortcut schema syntax', async t => {
+  const fastify = Fastify()
+  fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    path: '/',
+    schema: {
+      response: {
+        '2xx': {
+          answer: { type: 'number' }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: '42' }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    path: '/'
+  })
+
+  t.is(response.statusCode, 500)
+  t.deepEqual(JSON.parse(response.payload), {
+    statusCode: 500,
+    error: 'Internal Server Error',
+    message: 'response.answer should be number'
+  })
+})
+
 test('Shoult check only the assigned status code', async t => {
   const fastify = Fastify()
   fastify.register(plugin)
