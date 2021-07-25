@@ -27,17 +27,20 @@ function validateResponse (fastify, opts, next) {
   function buildHook (schema) {
     const statusCodes = {}
     for (const statusCode in schema) {
-      statusCodes[statusCode] = ajv.compile(schema[statusCode])
+      const responseSchema = schema[statusCode]
+      statusCodes[statusCode] = ajv.compile(
+        getSchemaAnyway(responseSchema)
+      )
     }
 
     return preSerialization
 
     function preSerialization (req, reply, payload, next) {
-      var validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
+      const validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
       if (validate !== undefined) {
-        var valid = validate(payload)
+        const valid = validate(payload)
         if (!valid) {
-          var err = new Error(schemaErrorsText(validate.errors))
+          const err = new Error(schemaErrorsText(validate.errors))
           err.validation = validate.errors
           reply.code(500)
           return next(err)
@@ -50,11 +53,28 @@ function validateResponse (fastify, opts, next) {
   next()
 }
 
+/**
+ * Copy-paste of getSchemaAnyway from fastify
+ *
+ * https://github.com/fastify/fastify/blob/23371945d01c270af24f4a5b7e2e31c4e806e6b3/lib/schemas.js#L113
+ */
+function getSchemaAnyway (schema) {
+  if (schema.$ref || schema.oneOf || schema.allOf || schema.anyOf || schema.$merge || schema.$patch) return schema
+  if (!schema.type && !schema.properties) {
+    return {
+      type: 'object',
+      properties: schema
+    }
+  }
+  return schema
+}
+
 function schemaErrorsText (errors) {
-  var text = ''
-  var separator = ', '
+  let text = ''
+  const separator = ', '
+  // eslint-disable-next-line no-var -- keep var for performance reasons
   for (var i = 0; i < errors.length; i++) {
-    var e = errors[i]
+    const e = errors[i]
     text += 'response' + (e.dataPath || '') + ' ' + e.message + separator
   }
   return text.slice(0, -separator.length)
