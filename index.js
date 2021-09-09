@@ -12,6 +12,19 @@ function validateResponse (fastify, opts, next) {
     nullable: true
   }, opts.ajv))
 
+  let addFormatPlugin = true
+  if (opts.plugins && opts.plugins.length > 0) {
+    for (const plugin of opts.plugins) {
+      if (Array.isArray(plugin)) {
+        addFormatPlugin = addFormatPlugin && plugin[0].name !== 'formatsPlugin'
+        plugin[0](ajv, plugin[1])
+      } else {
+        addFormatPlugin = addFormatPlugin && plugin.name !== 'formatsPlugin'
+        plugin(ajv)
+      }
+    }
+  }
+
   if (opts.responseValidation !== false) {
     fastify.addHook('onRoute', onRoute)
   }
