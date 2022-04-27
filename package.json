@@ -1,6 +1,6 @@
 {
-  "name": "fastify-response-validation",
-  "version": "0.2.0",
+  "name": "@fastify/response-validation",
+  "version": "1.0.0",
   "description": "A simple plugin that enables response validation for Fastify.",
   "main": "index.js",
   "dependencies": {
@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/fastify/fastify-response-validation/issues"
   },
-  "homepage": "https://github.com/fastify/fastify-response-validation#readme"
+  "homepage": "https://github.com/fastify/fastify-response-validation#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
