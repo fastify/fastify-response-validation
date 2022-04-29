@@ -1,7 +1,7 @@
-# fastify-response-validation
+# @fastify/response-validation
 
 ![CI](https://github.com/fastify/fastify-response-validation/workflows/CI/badge.svg)
-[![NPM version](https://img.shields.io/npm/v/fastify-response-validation.svg?style=flat)](https://www.npmjs.com/package/fastify-response-validation)
+[![NPM version](https://img.shields.io/npm/v/@fastify/response-validation.svg?style=flat)](https://www.npmjs.com/package/@fastify/response-validation)
 [![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-response-validation/badge.svg)](https://snyk.io/test/github/fastify/fastify-response-validation)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
@@ -10,7 +10,7 @@ The use of this plugin will slow down your overall performance, so we suggest us
 
 ## Install
 ```
-npm i fastify-response-validation
+npm i @fastify/response-validation
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ You just need to register the plugin and you will have response validation enabl
 ```js
 const fastify = require('fastify')()
 
-fastify.register(require('fastify-response-validation'))
+fastify.register(require('@fastify/response-validation'))
 
 fastify.route({
   method: 'GET',
@@ -56,7 +56,7 @@ If you want to override the default [ajv](https://www.npmjs.com/package/ajv) con
 //    allErrors: true
 //    nullable: true
 
-fastify.register(require('fastify-response-validation'), {
+fastify.register(require('@fastify/response-validation'), {
   ajv: {
     coerceTypes: true
   }
@@ -65,7 +65,7 @@ fastify.register(require('fastify-response-validation'), {
 
 By default the response validation is enabled on every route that has a response schema defined. If needed you can disable it all together with `responseValidation: false`:
 ```js
-fastify.register(require('fastify-response-validation'), {
+fastify.register(require('@fastify/response-validation'), {
   responseValidation: false
 })
 ```
