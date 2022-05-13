@@ -2,7 +2,6 @@
 
 ![CI](https://github.com/fastify/fastify-response-validation/workflows/CI/badge.svg)
 [![NPM version](https://img.shields.io/npm/v/@fastify/response-validation.svg?style=flat)](https://www.npmjs.com/package/@fastify/response-validation)
-[![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-response-validation/badge.svg)](https://snyk.io/test/github/fastify/fastify-response-validation)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A simple plugin that enables response validation for Fastify.  
