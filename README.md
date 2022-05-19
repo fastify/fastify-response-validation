@@ -15,11 +15,13 @@ npm i @fastify/response-validation
 ## Usage
 You just need to register the plugin and you will have response validation enabled:
 ```js
-const fastify = require('fastify')()
+import fastify from 'fastify'
 
-await fastify.register(require('@fastify/response-validation'))
+const app = fastify()
 
-fastify.route({
+await app.register(require('@fastify/response-validation'))
+
+app.route({
   method: 'GET',
   path: '/',
   schema: {
@@ -37,7 +39,7 @@ fastify.route({
   }
 })
 
-fastify.inject({
+app.inject({
   method: 'GET',
   path: '/'
 }, (err, res) => {
@@ -55,7 +57,11 @@ If you want to override the default [ajv](https://www.npmjs.com/package/ajv) con
 //    allErrors: true
 //    nullable: true
 
-await fastify.register(require('@fastify/response-validation'), {
+import responseValidator from '@fastify/response-validation'
+
+// ... App setup
+
+await fastify.register(responseValidator, {
   ajv: {
     coerceTypes: true
   }
@@ -64,7 +70,10 @@ await fastify.register(require('@fastify/response-validation'), {
 
 By default the response validation is enabled on every route that has a response schema defined. If needed you can disable it all together with `responseValidation: false`:
 ```js
-await fastify.register(require('@fastify/response-validation'), {
+import responseValidator from '@fastify/response-validation'
+
+// ... App setup
+await fastify.register(responseValidator, {
   responseValidation: false
 })
 ```
