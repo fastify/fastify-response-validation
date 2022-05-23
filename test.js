@@ -6,7 +6,7 @@ const plugin = require('./')
 
 test('Should return a validation error', async t => {
   const fastify = Fastify()
-  fastify.register(plugin)
+  await fastify.register(plugin)
 
   fastify.route({
     method: 'GET',
@@ -41,7 +41,7 @@ test('Should return a validation error', async t => {
 
 test('Should support shortcut schema syntax', async t => {
   const fastify = Fastify()
-  fastify.register(plugin)
+  await fastify.register(plugin)
 
   fastify.route({
     method: 'GET',
@@ -73,7 +73,7 @@ test('Should support shortcut schema syntax', async t => {
 
 test('Shoult check only the assigned status code', async t => {
   const fastify = Fastify()
-  fastify.register(plugin)
+  await fastify.register(plugin)
 
   fastify.route({
     method: 'GET',
@@ -104,7 +104,7 @@ test('Shoult check only the assigned status code', async t => {
 
 test('Override default ajv options', async t => {
   const fastify = Fastify()
-  fastify.register(plugin, { ajv: { coerceTypes: true } })
+  await fastify.register(plugin, { ajv: { coerceTypes: true } })
 
   fastify.route({
     method: 'GET',
@@ -135,7 +135,7 @@ test('Override default ajv options', async t => {
 
 test('Disable response validation for a specific route', async t => {
   const fastify = Fastify()
-  fastify.register(plugin)
+  await fastify.register(plugin)
 
   fastify.route({
     method: 'GET',
@@ -167,7 +167,7 @@ test('Disable response validation for a specific route', async t => {
 
 test('Disable response validation for every route', async t => {
   const fastify = Fastify()
-  fastify.register(plugin, { responseValidation: false })
+  await fastify.register(plugin, { responseValidation: false })
 
   fastify.route({
     method: 'GET',
