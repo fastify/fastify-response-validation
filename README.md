@@ -55,7 +55,6 @@ If you want to override the default [ajv](https://www.npmjs.com/package/ajv) con
 //    useDefaults: true
 //    removeAdditional: true
 //    allErrors: true
-//    nullable: true
 
 import responseValidator from '@fastify/response-validation'
 

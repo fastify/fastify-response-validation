@@ -32,10 +32,11 @@ test('Should return a validation error', async t => {
   })
 
   t.is(response.statusCode, 500)
-  t.deepEqual(JSON.parse(response.payload), {
+  const data = response.json()
+  t.deepEqual(data, {
     statusCode: 500,
     error: 'Internal Server Error',
-    message: 'response.answer should be number'
+    message: 'response/answer must be number'
   })
 })
 
@@ -67,7 +68,7 @@ test('Should support shortcut schema syntax', async t => {
   t.deepEqual(JSON.parse(response.payload), {
     statusCode: 500,
     error: 'Internal Server Error',
-    message: 'response.answer should be number'
+    message: 'response/answer must be number'
   })
 })
 

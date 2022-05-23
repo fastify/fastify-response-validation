@@ -8,8 +8,7 @@ function validateResponse (fastify, opts, next) {
     coerceTypes: false,
     useDefaults: true,
     removeAdditional: true,
-    allErrors: true,
-    nullable: true
+    allErrors: true
   }, opts.ajv))
 
   if (opts.responseValidation !== false) {
@@ -72,15 +71,13 @@ function getSchemaAnyway (schema) {
 function schemaErrorsText (errors) {
   let text = ''
   const separator = ', '
-  // eslint-disable-next-line no-var -- keep var for performance reasons
-  for (var i = 0; i < errors.length; i++) {
-    const e = errors[i]
-    text += 'response' + (e.dataPath || '') + ' ' + e.message + separator
+  for (const e of errors) {
+    text += 'response' + (e.instancePath || '') + ' ' + e.message + separator
   }
   return text.slice(0, -separator.length)
 }
 
 module.exports = fp(validateResponse, {
-  fastify: '>=4.0.0',
+  fastify: '4.x',
   name: '@fastify/response-validation'
 })
