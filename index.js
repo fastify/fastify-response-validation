@@ -11,6 +11,16 @@ function validateResponse (fastify, opts, next) {
     allErrors: true
   }, opts.ajv))
 
+  if (Array.isArray(opts.ajvPlugins)) {
+    for (const plugin of opts.ajvPlugins) {
+      if (Array.isArray(plugin)) {
+        plugin[0](ajv, plugin[1])
+      } else {
+        plugin(ajv)
+      }
+    }
+  }
+
   if (opts.responseValidation !== false) {
     fastify.addHook('onRoute', onRoute)
   }
