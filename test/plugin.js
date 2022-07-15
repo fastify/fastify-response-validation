@@ -12,7 +12,7 @@ test('use ajv formats', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -30,7 +30,7 @@ test('use ajv formats', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 200)
@@ -43,7 +43,7 @@ test('use ajv errors', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -64,7 +64,7 @@ test('use ajv errors', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 500)

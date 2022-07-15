@@ -10,7 +10,7 @@ test('Should return a validation error', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -28,7 +28,7 @@ test('Should return a validation error', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 500)
@@ -46,7 +46,7 @@ test('Should support shortcut schema syntax', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -61,7 +61,7 @@ test('Should support shortcut schema syntax', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 500)
@@ -78,7 +78,7 @@ test('Should check only the assigned status code', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '3xx': {
@@ -96,7 +96,7 @@ test('Should check only the assigned status code', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 200)
@@ -109,7 +109,7 @@ test('Should check anyOf Schema', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -131,7 +131,7 @@ test('Should check anyOf Schema', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 500)
@@ -145,7 +145,7 @@ test('response validation is set, but no response schema given returns unvalidat
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {},
     handler: async (req, reply) => {
       return { answer: '42' }
@@ -154,7 +154,7 @@ test('response validation is set, but no response schema given returns unvalidat
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 200)
@@ -167,7 +167,7 @@ test('Override default ajv options', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -185,7 +185,7 @@ test('Override default ajv options', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 200)
@@ -198,7 +198,7 @@ test('Disable response validation for a specific route', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     responseValidation: false,
     schema: {
       response: {
@@ -217,7 +217,7 @@ test('Disable response validation for a specific route', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 200)
@@ -230,7 +230,7 @@ test('Disable response validation for every route', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -248,7 +248,7 @@ test('Disable response validation for every route', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
   t.equal(response.statusCode, 200)
