@@ -13,9 +13,10 @@ declare module 'fastify' {
 
 declare namespace FastifyResponseValidationPlugin {
   interface Options {
-    ajv?: AjvOptions;
+    ajv?: AjvOptions & {
+      plugins?: (Function | [Function, unknown])[];
+    };
     responseValidation?: boolean;
-    ajvPlugins?: (Function | [Function, unknown])[]
   }
 }
 

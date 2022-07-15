@@ -99,5 +99,22 @@ fastify.route({
 })
 ```
 
+## Plugins
+You can also extend the functionalities of the ajv instance embedded in this validator by adding new ajv plugins.
+
+```js
+const ajvFormats = require('ajv-formats')
+fastify.register(require('fastify-response-validation'), {
+  ajv: {
+    plugins: [
+      require('ajv-formats'),
+      [require('ajv-errors'), { singleError: false }]
+      // Usage: [plugin, pluginOptions] - Plugin with options
+      // Usage: plugin - Plugin without options
+    ]
+  }
+})
+```
+
 ## License
 [MIT](./LICENSE)
