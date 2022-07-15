@@ -9,6 +9,7 @@
   },
   "types": "types/index.d.ts",
   "devDependencies": {
+    "@types/node": "^18.0.4",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",
     "fastify": "^4.2.1",
