@@ -15,3 +15,22 @@ app.register(plugin, { ajvPlugins: [ajvFormats] })
 app.register(plugin, { ajvPlugins: [ajvErrors] })
 app.register(plugin, { ajvPlugins: [[ajvErrors, {}]] })
 app.register(plugin, { ajvPlugins: [ajvFormats, [ajvErrors, {}]] })
+
+app.route({
+  method: 'GET',
+  url: '/',
+  responseValidation: false,
+  schema: {
+    response: {
+      '2xx': {
+        type: 'object',
+        properties: {
+          answer: { type: 'number' }
+        }
+      }
+    }
+  },
+  handler: async (req, reply) => {
+    return { answer: '42' }
+  }
+})
