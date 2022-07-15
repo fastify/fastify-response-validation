@@ -1,7 +1,6 @@
 import { FastifyPluginCallback, RawServerBase, RawServerDefault } from "fastify";
 import {
-  Options as AjvOptions,
-  Plugin as AjvPlugin
+  Options as AjvOptions
 } from "ajv";
 
 declare module 'fastify' {
@@ -16,7 +15,7 @@ declare namespace FastifyResponseValidationPlugin {
   interface Options {
     ajv?: AjvOptions;
     responseValidation?: boolean;
-    ajvPlugins?: (AjvPlugin<any> | [AjvPlugin<any>, { [key: string]: any; }])[];
+    ajvPlugins?: (Function | [Function, unknown])[]
   }
 }
 
