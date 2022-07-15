@@ -7,13 +7,17 @@
     "ajv": "^8.0.0",
     "fastify-plugin": "^4.0.0"
   },
+  "types": "types/index.d.ts",
   "devDependencies": {
-    "ava": "^3.1.0",
-    "fastify": "^4.0.0-rc.3",
-    "standard": "^17.0.0"
+    "fastify": "^4.2.1",
+    "standard": "^17.0.0",
+    "tap": "^16.3.0"
   },
   "scripts": {
-    "test": "standard && ava -v"
+    "lint": "standard",
+    "test": "npm run test:unit",
+    "test:unit": "tap -J test/test.js",
+    "test:report": "tap --coverage-report=html -J test/test.js"
   },
   "repository": {
     "type": "git",
