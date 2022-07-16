@@ -1,8 +1,8 @@
 'use strict'
 
-const test = require('ava')
+const test = require('tap').test
 const Fastify = require('fastify')
-const plugin = require('./')
+const plugin = require('..')
 
 test('Should return a validation error', async t => {
   const fastify = Fastify()
@@ -10,7 +10,7 @@ test('Should return a validation error', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -28,12 +28,12 @@ test('Should return a validation error', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
-  t.is(response.statusCode, 500)
+  t.equal(response.statusCode, 500)
   const data = response.json()
-  t.deepEqual(data, {
+  t.strictSame(data, {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'response/answer must be number'
@@ -46,7 +46,7 @@ test('Should support shortcut schema syntax', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -61,24 +61,24 @@ test('Should support shortcut schema syntax', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
-  t.is(response.statusCode, 500)
-  t.deepEqual(JSON.parse(response.payload), {
+  t.equal(response.statusCode, 500)
+  t.strictSame(JSON.parse(response.payload), {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'response/answer must be number'
   })
 })
 
-test('Shoult check only the assigned status code', async t => {
+test('Should check only the assigned status code', async t => {
   const fastify = Fastify()
   await fastify.register(plugin)
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '3xx': {
@@ -96,11 +96,69 @@ test('Shoult check only the assigned status code', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
-  t.is(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { answer: '42' })
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: '42' })
+})
+
+test('Should check anyOf Schema', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2xx': {
+          anyOf: [
+            {
+              type: 'object',
+              properties: {
+                answer: { type: 'number' }
+              }
+            }
+          ]
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: '42' }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 500)
+  t.equal(JSON.parse(response.payload).error, 'Internal Server Error')
+  t.equal(JSON.parse(response.payload).message, 'response/answer must be number, response must match a schema in anyOf')
+})
+
+test('response validation is set, but no response schema given returns unvalidated response', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {},
+    handler: async (req, reply) => {
+      return { answer: '42' }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: '42' })
 })
 
 test('Override default ajv options', async t => {
@@ -109,7 +167,7 @@ test('Override default ajv options', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -127,11 +185,11 @@ test('Override default ajv options', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
-  t.is(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { answer: 42 })
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: 42 })
 })
 
 test('Disable response validation for a specific route', async t => {
@@ -140,7 +198,7 @@ test('Disable response validation for a specific route', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     responseValidation: false,
     schema: {
       response: {
@@ -159,11 +217,11 @@ test('Disable response validation for a specific route', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
-  t.is(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { answer: 42 })
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: 42 })
 })
 
 test('Disable response validation for every route', async t => {
@@ -172,7 +230,7 @@ test('Disable response validation for every route', async t => {
 
   fastify.route({
     method: 'GET',
-    path: '/',
+    url: '/',
     schema: {
       response: {
         '2xx': {
@@ -190,9 +248,9 @@ test('Disable response validation for every route', async t => {
 
   const response = await fastify.inject({
     method: 'GET',
-    path: '/'
+    url: '/'
   })
 
-  t.is(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { answer: 42 })
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: 42 })
 })
