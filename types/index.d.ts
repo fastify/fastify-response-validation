@@ -7,9 +7,9 @@ declare module 'fastify' {
   }
 }
 
-type FastifyResponseValidation = FastifyPluginCallback<fastifyReponseValidation.Options>;
+type FastifyResponseValidation = FastifyPluginCallback<fastifyResponseValidation.Options>;
 
-declare namespace fastifyReponseValidation {
+declare namespace fastifyResponseValidation {
   export interface Options {
     ajv?: AjvOptions & {
       plugins?: (Function | [Function, unknown])[];
@@ -21,5 +21,5 @@ declare namespace fastifyReponseValidation {
   export { fastifyReponseValidation as default }
 }
 
-declare function fastifyReponseValidation(...params: Parameters<FastifyResponseValidation>): ReturnType<FastifyResponseValidation>
-export = fastifyReponseValidation
+declare function fastifyResponseValidation(...params: Parameters<FastifyResponseValidation>): ReturnType<FastifyResponseValidation>
+export = fastifyResponseValidation
