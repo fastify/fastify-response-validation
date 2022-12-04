@@ -20,7 +20,7 @@
   "scripts": {
     "lint": "standard",
     "test": "npm run test:unit && npm run test:typescript",
-    "test:unit": "tap -J test/*.js",
+    "test:unit": "tap",
     "test:typescript": "tsd",
     "test:report": "tap --coverage-report=html -J test/test.js"
   },
