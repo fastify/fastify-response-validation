@@ -3,7 +3,7 @@
 const fp = require('fastify-plugin')
 const Ajv = require('ajv')
 
-function validateResponse (fastify, opts, next) {
+function fastifyResponseValidation (fastify, opts, next) {
   const { plugins: ajvPlugins, ...ajvOptions } = Object.assign({
     coerceTypes: false,
     useDefaults: true,
@@ -93,7 +93,9 @@ function schemaErrorsText (errors) {
   return text.slice(0, -separator.length)
 }
 
-module.exports = fp(validateResponse, {
+module.exports = fp(fastifyResponseValidation, {
   fastify: '4.x',
   name: '@fastify/response-validation'
 })
+module.exports.default = fastifyResponseValidation
+module.exports.fastifyResponseValidation = fastifyResponseValidation
