@@ -43,16 +43,37 @@ function fastifyResponseValidation (fastify, opts, next) {
     const statusCodes = {}
     for (const statusCode in schema) {
       const responseSchema = schema[statusCode]
-      statusCodes[statusCode] = ajv.compile(
-        getSchemaAnyway(responseSchema)
-      )
+
+      if (responseSchema.content !== undefined) {
+        statusCodes[statusCode] = {}
+        for (const mediaName in responseSchema.content) {
+          statusCodes[statusCode][mediaName] = ajv.compile(
+            getSchemaAnyway(responseSchema.content[mediaName].schema)
+          )
+        }
+      } else {
+        statusCodes[statusCode] = ajv.compile(
+          getSchemaAnyway(responseSchema)
+        )
+      }
     }
 
     return preSerialization
 
     function preSerialization (req, reply, payload, next) {
-      const validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
+      let validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
+
       if (validate !== undefined) {
+        // Per media type validation
+        if (validate.constructor === Object) {
+          const mediaName = reply.getHeader('content-type').split(';')[0]
+          if (validate[mediaName] == null) {
+            next(new Error(`No schema defined for media type ${mediaName}`))
+            return
+          }
+          validate = validate[mediaName]
+        }
+
         const valid = validate(payload)
         if (!valid) {
           const err = new Error(schemaErrorsText(validate.errors))

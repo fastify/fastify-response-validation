@@ -103,6 +103,94 @@ test('Should check only the assigned status code', async t => {
   t.strictSame(JSON.parse(response.payload), { answer: '42' })
 })
 
+test('Should check media types', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2xx': {
+          content: {
+            'application/geo+json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  answer: { type: 'number' }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      reply.header('Content-Type', 'application/not+json')
+      return { answer: 42 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 500)
+  t.strictSame(JSON.parse(response.payload), {
+    statusCode: 500,
+    error: 'Internal Server Error',
+    message: 'No schema defined for media type application/not+json'
+  })
+})
+
+test('Should support media types', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2xx': {
+          content: {
+            'application/a+json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  answer: { type: 'boolean' }
+                }
+              }
+            },
+            'application/b+json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  answer: { type: 'number' }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      reply.header('Content-Type', 'application/b+json')
+      return { answer: 42 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: 42 })
+})
+
 test('Should check anyOf Schema', async t => {
   const fastify = Fastify()
   await fastify.register(plugin)

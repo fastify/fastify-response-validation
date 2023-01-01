@@ -48,6 +48,32 @@ app.inject({
 })
 ```
 
+Different content types responses are supported by `@fastify/response-validation`, `@fastify/swagger` and `fastify`. Please use `content` for the response otherwise Fastify itself will fail to compile the schema:
+```js
+{
+  response: {
+    200: {
+      description: 'Description and all status-code based properties are working',
+      content: {
+        'application/json': {
+          schema: { 
+            name: { type: 'string' }, 
+            image: { type: 'string' }, 
+            address: { type: 'string' } 
+          }
+        }, 
+        'application/vnd.v1+json': {
+          schema: { 
+            fullName: { type: 'string' }, 
+            phone: { type: 'string' } 
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 If you want to override the default [ajv](https://www.npmjs.com/package/ajv) configuration, you can do that by using the `ajv` option:
 ```js
 // Default configuration:
