@@ -17,8 +17,8 @@ declare namespace fastifyResponseValidation {
     responseValidation?: boolean;
   }
   
-  export const fastifyReponseValidation: FastifyResponseValidation
-  export { fastifyReponseValidation as default }
+  export const fastifyResponseValidation: FastifyResponseValidation
+  export { fastifyResponseValidation as default }
 }
 
 declare function fastifyResponseValidation(...params: Parameters<FastifyResponseValidation>): ReturnType<FastifyResponseValidation>
