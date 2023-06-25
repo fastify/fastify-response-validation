@@ -4,7 +4,7 @@ const fp = require('fastify-plugin')
 const Ajv = require('ajv')
 
 function fastifyResponseValidation (fastify, opts, next) {
-  const isAjvInstance = opts.ajv instanceof Ajv
+  const isAjvInstance = opts.ajv && opts.ajv instanceof Ajv
   const ajvOpts = isAjvInstance ? opts.ajv.opts : opts.ajv
   const { plugins: ajvPlugins, ...ajvOptions } = Object.assign({
     coerceTypes: false,
@@ -19,7 +19,8 @@ function fastifyResponseValidation (fastify, opts, next) {
     return
   }
 
-  const ajv = isAjvInstance ? opts.ajv : new Ajv(ajvOptions)
+  // Create new instance ensure default configurations above
+  const ajv = new Ajv(ajvOptions)
 
   for (const plugin of ajvPlugins) {
     if (Array.isArray(plugin)) {
