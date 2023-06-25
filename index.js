@@ -4,29 +4,30 @@ const fp = require('fastify-plugin')
 const Ajv = require('ajv')
 
 function fastifyResponseValidation (fastify, opts, next) {
-  const isAjvInstance = opts.ajv && opts.ajv instanceof Ajv
-  const ajvOpts = isAjvInstance ? opts.ajv.opts : opts.ajv
-  const { plugins: ajvPlugins, ...ajvOptions } = Object.assign({
-    coerceTypes: false,
-    useDefaults: true,
-    removeAdditional: true,
-    allErrors: true,
-    plugins: []
-  }, ajvOpts)
+  let ajv
+  if (opts.ajv && opts.ajv instanceof Ajv) {
+    ajv = opts.ajv
+  } else {
+    const { plugins: ajvPlugins, ...ajvOptions } = Object.assign({
+      coerceTypes: false,
+      useDefaults: true,
+      removeAdditional: true,
+      allErrors: true,
+      plugins: []
+    }, opts.ajv)
 
-  if (!Array.isArray(ajvPlugins)) {
-    next(new Error(`ajv.plugins option should be an array, instead got '${typeof ajvPlugins}'`))
-    return
-  }
+    if (!Array.isArray(ajvPlugins)) {
+      next(new Error(`ajv.plugins option should be an array, instead got '${typeof ajvPlugins}'`))
+      return
+    }
+    ajv = new Ajv(ajvOptions)
 
-  // Create new instance ensure default configurations above
-  const ajv = new Ajv(ajvOptions)
-
-  for (const plugin of ajvPlugins) {
-    if (Array.isArray(plugin)) {
-      plugin[0](ajv, plugin[1])
-    } else {
-      plugin(ajv)
+    for (const plugin of ajvPlugins) {
+      if (Array.isArray(plugin)) {
+        plugin[0](ajv, plugin[1])
+      } else {
+        plugin(ajv)
+      }
     }
   }
 

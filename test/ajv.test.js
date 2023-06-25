@@ -4,6 +4,8 @@ const test = require('tap').test
 const Fastify = require('fastify')
 const plugin = require('..')
 const Ajv = require('ajv')
+const ajvFormats = require('ajv-formats')
+const ajvErrors = require('ajv-errors')
 
 test('use ajv formats', async t => {
   const fastify = Fastify()
@@ -102,7 +104,8 @@ test('should throw an error if ajv.plugins is number', async t => {
 
 test('use ajv formats with Ajv instance', async t => {
   const fastify = Fastify()
-  const ajv = new Ajv({ plugins: [require('ajv-formats')] })
+  const ajv = new Ajv()
+  ajvFormats(ajv)
   await fastify.register(plugin, { ajv })
 
   fastify.route({
@@ -134,7 +137,8 @@ test('use ajv formats with Ajv instance', async t => {
 
 test('use ajv errors with Ajv instance', async t => {
   const fastify = Fastify()
-  const ajv = new Ajv({ plugins: [[require('ajv-errors'), { singleError: false }]] })
+  const ajv = new Ajv({ allErrors: true })
+  ajvErrors(ajv, { singleError: true })
   await fastify.register(plugin, { ajv })
 
   fastify.route({
