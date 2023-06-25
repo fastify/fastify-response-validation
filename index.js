@@ -4,20 +4,22 @@ const fp = require('fastify-plugin')
 const Ajv = require('ajv')
 
 function fastifyResponseValidation (fastify, opts, next) {
+  const isAjvInstance = opts.ajv instanceof Ajv
+  const ajvOpts = isAjvInstance ? opts.ajv.opts : opts.ajv
   const { plugins: ajvPlugins, ...ajvOptions } = Object.assign({
     coerceTypes: false,
     useDefaults: true,
     removeAdditional: true,
     allErrors: true,
     plugins: []
-  }, opts.ajv)
+  }, ajvOpts)
 
   if (!Array.isArray(ajvPlugins)) {
     next(new Error(`ajv.plugins option should be an array, instead got '${typeof ajvPlugins}'`))
     return
   }
 
-  const ajv = new Ajv(ajvOptions)
+  const ajv = isAjvInstance ? opts.ajv : new Ajv(ajvOptions)
 
   for (const plugin of ajvPlugins) {
     if (Array.isArray(plugin)) {
