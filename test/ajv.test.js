@@ -158,7 +158,7 @@ test('use ajv errors with Ajv instance', async t => {
       }
     },
     handler: async (req, reply) => {
-      return { foo: 24 }
+      return { notAnAnswer: 24 }
     }
   })
 
@@ -168,7 +168,7 @@ test('use ajv errors with Ajv instance', async t => {
   })
 
   t.equal(response.statusCode, 500)
-  t.equal(JSON.parse(response.payload).message, 'response should be an object with an integer property answer only')
+  t.equal(response.json().message, 'response should be an object with an integer property answer only')
 })
 
 test('should throw an error if ajv.plugins is not passed to instance and not array', async t => {
