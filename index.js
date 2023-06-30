@@ -12,7 +12,7 @@ function fastifyResponseValidation (fastify, opts, next) {
     plugins: []
   }, opts.ajv)
 
-  if (!ajvPlugins || !Array.isArray(ajvPlugins)) {
+  if (!Array.isArray(ajvPlugins)) {
     next(new Error(`ajv.plugins option should be an array, instead got '${typeof ajvPlugins}'`))
     return
   }

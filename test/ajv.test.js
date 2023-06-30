@@ -69,8 +69,32 @@ test('use ajv errors', async t => {
   t.equal(JSON.parse(response.payload).message, 'response should be an object with an integer property answer only')
 })
 
-test('should throw an error if ajv.plugins is not an array', async t => {
+test('should throw an error if ajv.plugins is string', async t => {
   t.plan(1)
   const fastify = Fastify()
   t.rejects(fastify.register(plugin, { ajv: { plugins: 'invalid' } }), 'ajv.plugins option should be an array, instead got \'string\'')
+})
+
+test('should throw an error if ajv.plugins is null', async t => {
+  t.plan(1)
+  const fastify = Fastify()
+  t.rejects(fastify.register(plugin, { ajv: { plugins: null } }), 'ajv.plugins option should be an array, instead got \'object\'')
+})
+
+test('should throw an error if ajv.plugins is undefined', async t => {
+  t.plan(1)
+  const fastify = Fastify()
+  t.rejects(fastify.register(plugin, { ajv: { plugins: undefined } }), 'ajv.plugins option should be an array, instead got \'undefined\'')
+})
+
+test('should throw an error if ajv.plugins is boolean', async t => {
+  t.plan(1)
+  const fastify = Fastify()
+  t.rejects(fastify.register(plugin, { ajv: { plugins: false } }), 'ajv.plugins option should be an array, instead got \'boolean\'')
+})
+
+test('should throw an error if ajv.plugins is number', async t => {
+  t.plan(1)
+  const fastify = Fastify()
+  t.rejects(fastify.register(plugin, { ajv: { plugins: 0 } }), 'ajv.plugins option should be an array, instead got \'number\'')
 })
