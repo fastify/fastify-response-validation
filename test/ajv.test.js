@@ -3,6 +3,9 @@
 const test = require('tap').test
 const Fastify = require('fastify')
 const plugin = require('..')
+const Ajv = require('ajv')
+const ajvFormats = require('ajv-formats')
+const ajvErrors = require('ajv-errors')
 
 test('use ajv formats', async t => {
   const fastify = Fastify()
@@ -97,4 +100,79 @@ test('should throw an error if ajv.plugins is number', async t => {
   t.plan(1)
   const fastify = Fastify()
   t.rejects(fastify.register(plugin, { ajv: { plugins: 0 } }), 'ajv.plugins option should be an array, instead got \'number\'')
+})
+
+test('use ajv formats with Ajv instance', async t => {
+  const fastify = Fastify()
+  const ajv = new Ajv()
+  ajvFormats(ajv)
+  await fastify.register(plugin, { ajv })
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2xx': {
+          type: 'object',
+          properties: {
+            answer: { type: 'number', format: 'float' }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: 2.4 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 200)
+  t.strictSame(JSON.parse(response.payload), { answer: 2.4 })
+})
+
+test('use ajv errors with Ajv instance', async t => {
+  const fastify = Fastify()
+  const ajv = new Ajv({ allErrors: true })
+  ajvErrors(ajv, { singleError: true })
+  await fastify.register(plugin, { ajv })
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2xx': {
+          type: 'object',
+          required: ['answer'],
+          properties: {
+            answer: { type: 'number' }
+          },
+          additionalProperties: false,
+          errorMessage: 'should be an object with an integer property answer only'
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { notAnAnswer: 24 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 500)
+  t.equal(response.json().message, 'response should be an object with an integer property answer only')
+})
+
+test('should throw an error if ajv.plugins is not passed to instance and not array', async t => {
+  t.plan(1)
+  const fastify = Fastify()
+  t.rejects(fastify.register(plugin, { ajv: { plugins: 'invalid' } }), 'ajv.plugins option should be an array, instead got \'string\'')
 })

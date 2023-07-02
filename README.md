@@ -93,6 +93,23 @@ await fastify.register(responseValidator, {
 })
 ```
 
+You can also pass in an instance of ajv
+```js
+// Default configuration:
+//    coerceTypes: false
+//    useDefaults: true
+//    removeAdditional: true
+//    allErrors: true
+
+import responseValidator from '@fastify/response-validation'
+import Ajv from 'ajv'
+
+// ... App setup
+
+const ajv = new Ajv()
+await fastify.register(responseValidator, { ajv })
+```
+
 By default the response validation is enabled on every route that has a response schema defined. If needed you can disable it all together with `responseValidation: false`:
 ```js
 import responseValidator from '@fastify/response-validation'
