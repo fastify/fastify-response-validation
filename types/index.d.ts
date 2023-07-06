@@ -1,5 +1,5 @@
 import { FastifyPluginCallback, RawServerBase, RawServerDefault } from "fastify";
-import { Options as AjvOptions } from "ajv";
+import Ajv, { Options as AjvOptions } from "ajv";
 
 declare module 'fastify' {
   interface RouteShorthandOptions<RawServer extends RawServerBase = RawServerDefault> {
@@ -11,9 +11,9 @@ type FastifyResponseValidation = FastifyPluginCallback<fastifyResponseValidation
 
 declare namespace fastifyResponseValidation {
   export interface Options {
-    ajv?: AjvOptions & {
+    ajv?: Ajv | (AjvOptions & {
       plugins?: (Function | [Function, unknown])[];
-    };
+    });
     responseValidation?: boolean;
   }
   
