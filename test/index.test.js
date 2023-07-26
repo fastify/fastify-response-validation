@@ -342,3 +342,74 @@ test('Disable response validation for every route', async t => {
   t.equal(response.statusCode, 200)
   t.strictSame(JSON.parse(response.payload), { answer: 42 })
 })
+
+test('Enable response status code validation for a specific route', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    responseStatusCodeValidation: true,
+    schema: {
+      response: {
+        204: {
+          type: 'object',
+          properties: {
+            answer: { type: 'number' }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: 42 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 500)
+  t.strictSame(JSON.parse(response.payload), {
+    statusCode: 500,
+    error: 'Internal Server Error',
+    message: 'No schema defined for status code 200'
+  })
+})
+
+test('Enable response status code validation for every route', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin, { responseStatusCodeValidation: true })
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        204: {
+          type: 'object',
+          properties: {
+            answer: { type: 'number' }
+          }
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: '42' }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.equal(response.statusCode, 500)
+  t.strictSame(JSON.parse(response.payload), {
+    statusCode: 500,
+    error: 'Internal Server Error',
+    message: 'No schema defined for status code 200'
+  })
+})

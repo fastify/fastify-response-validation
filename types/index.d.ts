@@ -4,6 +4,7 @@ import Ajv, { Options as AjvOptions } from "ajv";
 declare module 'fastify' {
   interface RouteShorthandOptions<RawServer extends RawServerBase = RawServerDefault> {
     responseValidation?: boolean;
+    responseStatusCodeValidation?: boolean;
   }
 }
 
@@ -15,6 +16,7 @@ declare namespace fastifyResponseValidation {
       plugins?: (Function | [Function, unknown])[];
     });
     responseValidation?: boolean;
+    responseStatusCodeValidation?: boolean;
   }
   
   export const fastifyResponseValidation: FastifyResponseValidation

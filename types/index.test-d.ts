@@ -12,6 +12,8 @@ app.register(plugin, {});
 app.register(plugin, { ajv: { coerceTypes: true } });
 app.register(plugin, { responseValidation: true });
 app.register(plugin, { responseValidation: false });
+app.register(plugin, { responseStatusCodeValidation: true });
+app.register(plugin, { responseStatusCodeValidation: false });
 app.register(plugin, { ajv: { plugins: [require('ajv-formats')] } })
 app.register(plugin, { ajv: { plugins: [require('ajv-errors')] } })
 app.register(plugin, { ajv: { plugins: [[require('ajv-errors'), {}]] } })
