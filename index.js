@@ -35,15 +35,16 @@ function fastifyResponseValidation (fastify, opts, next) {
     fastify.addHook('onRoute', onRoute)
   }
 
-  function onRoute (opts) {
-    if (opts.responseValidation === false) return
-    if (opts.schema && opts.schema.response) {
-      opts.preSerialization = opts.preSerialization || []
-      opts.preSerialization.push(buildHook(opts.schema.response))
+  function onRoute (routeOpts) {
+    if (routeOpts.responseValidation === false) return
+    if (routeOpts.schema && routeOpts.schema.response) {
+      const responseStatusCodeValidation = routeOpts.responseStatusCodeValidation || opts.responseStatusCodeValidation || false
+      routeOpts.preSerialization = routeOpts.preSerialization || []
+      routeOpts.preSerialization.push(buildHook(routeOpts.schema.response, responseStatusCodeValidation))
     }
   }
 
-  function buildHook (schema) {
+  function buildHook (schema, responseStatusCodeValidation) {
     const statusCodes = {}
     for (const statusCode in schema) {
       const responseSchema = schema[statusCode]
@@ -67,6 +68,11 @@ function fastifyResponseValidation (fastify, opts, next) {
     function preSerialization (req, reply, payload, next) {
       let validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
 
+      if (responseStatusCodeValidation && validate === undefined) {
+        next(new Error(`No schema defined for status code ${reply.statusCode}`))
+        return
+      }
+
       if (validate !== undefined) {
         // Per media type validation
         if (validate.constructor === Object) {
@@ -86,6 +92,7 @@ function fastifyResponseValidation (fastify, opts, next) {
           return next(err)
         }
       }
+
       next()
     }
   }
