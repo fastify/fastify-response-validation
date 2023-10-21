@@ -76,7 +76,7 @@ function fastifyResponseValidation (fastify, opts, next) {
       if (validate !== undefined) {
         // Per media type validation
         if (validate.constructor === Object) {
-          const mediaName = reply.getHeader('content-type').split(';')[0]
+          const mediaName = reply.getHeader('content-type').split(';', 1)[0]
           if (validate[mediaName] == null) {
             next(new Error(`No schema defined for media type ${mediaName}`))
             return
