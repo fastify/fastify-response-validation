@@ -3,6 +3,7 @@
   "version": "2.5.0",
   "description": "A simple plugin that enables response validation for Fastify.",
   "main": "index.js",
+  "type": "commonjs",
   "dependencies": {
     "ajv": "^8.0.0",
     "fastify-plugin": "^4.0.0"
