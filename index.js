@@ -2,10 +2,11 @@
 
 const fp = require('fastify-plugin')
 const Ajv = require('ajv')
+const AjvCore = require('ajv/dist/core')
 
 function fastifyResponseValidation (fastify, opts, next) {
   let ajv
-  if (opts.ajv && opts.ajv instanceof Ajv) {
+  if (opts.ajv && opts.ajv instanceof AjvCore.default) {
     ajv = opts.ajv
   } else {
     const { plugins: ajvPlugins, ...ajvOptions } = Object.assign({
