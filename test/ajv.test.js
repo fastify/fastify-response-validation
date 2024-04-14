@@ -77,31 +77,31 @@ test('use ajv errors', async t => {
 test('should throw an error if ajv.plugins is string', async t => {
   t.plan(1)
   const fastify = Fastify()
-  t.rejects(fastify.register(plugin, { ajv: { plugins: 'invalid' } }), 'ajv.plugins option should be an array, instead got \'string\'')
+  t.rejects(async () => fastify.register(plugin, { ajv: { plugins: 'invalid' } }), 'ajv.plugins option should be an array, instead got \'string\'')
 })
 
 test('should throw an error if ajv.plugins is null', async t => {
   t.plan(1)
   const fastify = Fastify()
-  t.rejects(fastify.register(plugin, { ajv: { plugins: null } }), 'ajv.plugins option should be an array, instead got \'object\'')
+  t.rejects(async () => fastify.register(plugin, { ajv: { plugins: null } }), 'ajv.plugins option should be an array, instead got \'object\'')
 })
 
 test('should throw an error if ajv.plugins is undefined', async t => {
   t.plan(1)
   const fastify = Fastify()
-  t.rejects(fastify.register(plugin, { ajv: { plugins: undefined } }), 'ajv.plugins option should be an array, instead got \'undefined\'')
+  t.rejects(async () => fastify.register(plugin, { ajv: { plugins: undefined } }), 'ajv.plugins option should be an array, instead got \'undefined\'')
 })
 
 test('should throw an error if ajv.plugins is boolean', async t => {
   t.plan(1)
   const fastify = Fastify()
-  t.rejects(fastify.register(plugin, { ajv: { plugins: false } }), 'ajv.plugins option should be an array, instead got \'boolean\'')
+  t.rejects(async () => fastify.register(plugin, { ajv: { plugins: false } }), 'ajv.plugins option should be an array, instead got \'boolean\'')
 })
 
 test('should throw an error if ajv.plugins is number', async t => {
   t.plan(1)
   const fastify = Fastify()
-  t.rejects(fastify.register(plugin, { ajv: { plugins: 0 } }), 'ajv.plugins option should be an array, instead got \'number\'')
+  t.rejects(async () => fastify.register(plugin, { ajv: { plugins: 0 } }), 'ajv.plugins option should be an array, instead got \'number\'')
 })
 
 test('use ajv formats with Ajv instance', async t => {
@@ -314,5 +314,5 @@ test('use ajv errors with 2019 Ajv instance', async t => {
 test('should throw an error if ajv.plugins is not passed to instance and not array', async t => {
   t.plan(1)
   const fastify = Fastify()
-  t.rejects(fastify.register(plugin, { ajv: { plugins: 'invalid' } }), 'ajv.plugins option should be an array, instead got \'string\'')
+  t.rejects(async () => fastify.register(plugin, { ajv: { plugins: 'invalid' } }), 'ajv.plugins option should be an array, instead got \'string\'')
 })
