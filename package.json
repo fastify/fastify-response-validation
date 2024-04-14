@@ -10,6 +10,7 @@
   },
   "types": "types/index.d.ts",
   "devDependencies": {
+    "@fastify/pre-commit": "^2.1.0",
     "@types/node": "^20.12.7",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
