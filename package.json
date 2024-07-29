@@ -11,7 +11,7 @@
   "types": "types/index.d.ts",
   "devDependencies": {
     "@fastify/pre-commit": "^2.1.0",
-    "@types/node": "^20.12.7",
+    "@types/node": "^22.0.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "fastify": "^4.26.2",
