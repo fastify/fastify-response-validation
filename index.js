@@ -127,7 +127,7 @@ function schemaErrorsText (errors) {
 }
 
 module.exports = fp(fastifyResponseValidation, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: '@fastify/response-validation'
 })
 module.exports.default = fastifyResponseValidation
