@@ -1,6 +1,6 @@
 'use strict'
 
-const test = require('tap').test
+const { test } = require('node:test')
 const Fastify = require('fastify')
 const plugin = require('..')
 
@@ -31,9 +31,9 @@ test('Should return a validation error', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 500)
+  t.assert.strictEqual(response.statusCode, 500)
   const data = response.json()
-  t.strictSame(data, {
+  t.assert.deepStrictEqual(data, {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'response/answer must be number'
@@ -64,8 +64,8 @@ test('Should support shortcut schema syntax', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 500)
-  t.strictSame(JSON.parse(response.payload), {
+  t.assert.strictEqual(response.statusCode, 500)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'response/answer must be number'
@@ -99,8 +99,8 @@ test('Should check only the assigned status code', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 200)
-  t.strictSame(JSON.parse(response.payload), { answer: '42' })
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: '42' })
 })
 
 test('Should check media types', async t => {
@@ -137,8 +137,8 @@ test('Should check media types', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 500)
-  t.strictSame(JSON.parse(response.payload), {
+  t.assert.strictEqual(response.statusCode, 500)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'No schema defined for media type application/not+json'
@@ -187,8 +187,8 @@ test('Should support media types', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 200)
-  t.strictSame(JSON.parse(response.payload), { answer: 42 })
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
 })
 
 test('Should check anyOf Schema', async t => {
@@ -222,9 +222,9 @@ test('Should check anyOf Schema', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 500)
-  t.equal(JSON.parse(response.payload).error, 'Internal Server Error')
-  t.equal(JSON.parse(response.payload).message, 'response/answer must be number, response must match a schema in anyOf')
+  t.assert.strictEqual(response.statusCode, 500)
+  t.assert.strictEqual(JSON.parse(response.payload).error, 'Internal Server Error')
+  t.assert.strictEqual(JSON.parse(response.payload).message, 'response/answer must be number, response must match a schema in anyOf')
 })
 
 test('response validation is set, but no response schema given returns unvalidated response', async t => {
@@ -245,8 +245,8 @@ test('response validation is set, but no response schema given returns unvalidat
     url: '/'
   })
 
-  t.equal(response.statusCode, 200)
-  t.strictSame(JSON.parse(response.payload), { answer: '42' })
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: '42' })
 })
 
 test('Override default ajv options', async t => {
@@ -276,8 +276,8 @@ test('Override default ajv options', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 200)
-  t.strictSame(JSON.parse(response.payload), { answer: 42 })
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
 })
 
 test('Disable response validation for a specific route', async t => {
@@ -308,8 +308,8 @@ test('Disable response validation for a specific route', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 200)
-  t.strictSame(JSON.parse(response.payload), { answer: 42 })
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
 })
 
 test('Disable response validation for every route', async t => {
@@ -339,8 +339,8 @@ test('Disable response validation for every route', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 200)
-  t.strictSame(JSON.parse(response.payload), { answer: 42 })
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
 })
 
 test('Enable response status code validation for a specific route', async t => {
@@ -371,8 +371,8 @@ test('Enable response status code validation for a specific route', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 500)
-  t.strictSame(JSON.parse(response.payload), {
+  t.assert.strictEqual(response.statusCode, 500)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'No schema defined for status code 200'
@@ -406,8 +406,8 @@ test('Enable response status code validation for every route', async t => {
     url: '/'
   })
 
-  t.equal(response.statusCode, 500)
-  t.strictSame(JSON.parse(response.payload), {
+  t.assert.strictEqual(response.statusCode, 500)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), {
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'No schema defined for status code 200'
