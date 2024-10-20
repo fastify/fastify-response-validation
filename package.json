@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "commonjs",
   "dependencies": {
+    "@fastify/error": "^4.0.0",
     "ajv": "^8.12.0",
     "fastify-plugin": "^5.0.1"
   },

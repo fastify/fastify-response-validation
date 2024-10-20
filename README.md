@@ -158,5 +158,13 @@ fastify.register(require('fastify-response-validation'), {
 })
 ```
 
+## Errors
+
+The errors emitted by this plugin are:
+
+- `FST_RESPONSE_VALIDATION_FAILED_VALIDATION`: This error is emitted when a response does not conform to the provided schema.
+
+- `FST_RESPONSE_VALIDATION_SCHEMA_NOT_DEFINED`: This error is emitted when there is no JSON schema available to validate the response.
+
 ## License
 [MIT](./LICENSE)

@@ -3,6 +3,10 @@
 const fp = require('fastify-plugin')
 const Ajv = require('ajv')
 const AjvCore = require('ajv/dist/core')
+const createError = require('@fastify/error')
+
+const ReplyValidationFailError = createError('FST_RESPONSE_VALIDATION_FAILED_VALIDATION', '%s', 500)
+const NoSchemaDefinedError = createError('FST_RESPONSE_VALIDATION_SCHEMA_NOT_DEFINED', 'No schema defined for %s')
 
 function fastifyResponseValidation (fastify, opts, next) {
   let ajv
@@ -70,7 +74,7 @@ function fastifyResponseValidation (fastify, opts, next) {
       let validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx']
 
       if (responseStatusCodeValidation && validate === undefined) {
-        next(new Error(`No schema defined for status code ${reply.statusCode}`))
+        next(new NoSchemaDefinedError(`status code ${reply.statusCode}`))
         return
       }
 
@@ -79,7 +83,7 @@ function fastifyResponseValidation (fastify, opts, next) {
         if (validate.constructor === Object) {
           const mediaName = reply.getHeader('content-type').split(';', 1)[0]
           if (validate[mediaName] == null) {
-            next(new Error(`No schema defined for media type ${mediaName}`))
+            next(new NoSchemaDefinedError(`media type ${mediaName}`))
             return
           }
           validate = validate[mediaName]
@@ -87,9 +91,9 @@ function fastifyResponseValidation (fastify, opts, next) {
 
         const valid = validate(payload)
         if (!valid) {
-          const err = new Error(schemaErrorsText(validate.errors))
+          const err = new ReplyValidationFailError(schemaErrorsText(validate.errors))
           err.validation = validate.errors
-          reply.code(500)
+          reply.code(err.statusCode)
           return next(err)
         }
       }
