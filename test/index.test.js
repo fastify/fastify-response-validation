@@ -34,6 +34,7 @@ test('Should return a validation error', async t => {
   t.assert.strictEqual(response.statusCode, 500)
   const data = response.json()
   t.assert.deepStrictEqual(data, {
+    code: 'FST_RESPONSE_VALIDATION_FAILED_VALIDATION',
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'response/answer must be number'
@@ -66,6 +67,7 @@ test('Should support shortcut schema syntax', async t => {
 
   t.assert.strictEqual(response.statusCode, 500)
   t.assert.deepStrictEqual(JSON.parse(response.payload), {
+    code: 'FST_RESPONSE_VALIDATION_FAILED_VALIDATION',
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'response/answer must be number'
@@ -139,6 +141,7 @@ test('Should check media types', async t => {
 
   t.assert.strictEqual(response.statusCode, 500)
   t.assert.deepStrictEqual(JSON.parse(response.payload), {
+    code: 'FST_RESPONSE_VALIDATION_SCHEMA_NOT_DEFINED',
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'No schema defined for media type application/not+json'
@@ -373,6 +376,7 @@ test('Enable response status code validation for a specific route', async t => {
 
   t.assert.strictEqual(response.statusCode, 500)
   t.assert.deepStrictEqual(JSON.parse(response.payload), {
+    code: 'FST_RESPONSE_VALIDATION_SCHEMA_NOT_DEFINED',
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'No schema defined for status code 200'
@@ -408,6 +412,7 @@ test('Enable response status code validation for every route', async t => {
 
   t.assert.strictEqual(response.statusCode, 500)
   t.assert.deepStrictEqual(JSON.parse(response.payload), {
+    code: 'FST_RESPONSE_VALIDATION_SCHEMA_NOT_DEFINED',
     statusCode: 500,
     error: 'Internal Server Error',
     message: 'No schema defined for status code 200'
