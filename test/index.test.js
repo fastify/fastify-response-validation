@@ -105,6 +105,94 @@ test('Should check only the assigned status code', async t => {
   t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: '42' })
 })
 
+/**
+ * OpenAPI 3.1.0 - Responses Object - 2XX status filter in upper case
+ * https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#responses-object
+ */
+test('Should use response matching 5XX instead of default', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2XX': {
+          type: 'object',
+          properties: {
+            answer: { type: 'number' }
+          }
+        },
+        default: {
+          type: 'object',
+          properties: {
+            error_message: { type: 'string' }
+          },
+          required: [
+            'error_message'
+          ]
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: 42 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
+})
+
+/**
+ * OpenAPI 3.1.0 - Responses Object - default
+ * https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#responses-object
+ */
+test('Should fallback to default response if nothing matches', async t => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2XX': {
+          type: 'object',
+          properties: {
+            answer: { type: 'number' }
+          }
+        },
+        default: {
+          type: 'object',
+          properties: {
+            error_message: { type: 'string' }
+          },
+          required: [
+            'error_message'
+          ]
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      reply.status(500).send({ error_message: 'the answer is 42' })
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.assert.strictEqual(response.statusCode, 500)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { error_message: 'the answer is 42' })
+})
+
 test('Should check media types', async t => {
   const fastify = Fastify()
   await fastify.register(plugin)
