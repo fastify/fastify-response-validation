@@ -41,6 +41,7 @@ function fastifyResponseValidation (fastify, opts, next) {
   }
 
   function onRoute (routeOpts) {
+    ajv.addSchema(Object.values(fastify.getSchemas()));
     if (routeOpts.responseValidation === false) return
     if (routeOpts.schema && routeOpts.schema.response) {
       const responseStatusCodeValidation = routeOpts.responseStatusCodeValidation || opts.responseStatusCodeValidation || false
