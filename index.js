@@ -41,9 +41,9 @@ function fastifyResponseValidation (fastify, opts, next) {
   }
 
   function onRoute (routeOpts) {
-    ajv.addSchema(Object.values(fastify.getSchemas()));
     if (routeOpts.responseValidation === false) return
     if (routeOpts.schema && routeOpts.schema.response) {
+      ajv.addSchema(Object.values(fastify.getSchemas()));
       const responseStatusCodeValidation = routeOpts.responseStatusCodeValidation || opts.responseStatusCodeValidation || false
       routeOpts.preSerialization = routeOpts.preSerialization || []
       routeOpts.preSerialization.push(buildHook(routeOpts.schema.response, responseStatusCodeValidation))
