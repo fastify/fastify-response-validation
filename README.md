@@ -4,7 +4,7 @@
 [![NPM version](https://img.shields.io/npm/v/@fastify/response-validation.svg?style=flat)](https://www.npmjs.com/package/@fastify/response-validation)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
-A simple plugin that enables response validation for Fastify.  
+A simple plugin that enables response validation for Fastify.
 The use of this plugin will slow down your overall performance, so we suggest using it only during development.
 
 ## Install
@@ -56,16 +56,16 @@ Different content types responses are supported by `@fastify/response-validation
       description: 'Description and all status-code based properties are working',
       content: {
         'application/json': {
-          schema: { 
-            name: { type: 'string' }, 
-            image: { type: 'string' }, 
-            address: { type: 'string' } 
+          schema: {
+            name: { type: 'string' },
+            image: { type: 'string' },
+            address: { type: 'string' }
           }
-        }, 
+        },
         'application/vnd.v1+json': {
-          schema: { 
-            fullName: { type: 'string' }, 
-            phone: { type: 'string' } 
+          schema: {
+            fullName: { type: 'string' },
+            phone: { type: 'string' }
           }
         }
       }
