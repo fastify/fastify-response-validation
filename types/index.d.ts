@@ -18,7 +18,7 @@ declare namespace fastifyResponseValidation {
     responseValidation?: boolean;
     responseStatusCodeValidation?: boolean;
   }
-  
+
   export const fastifyResponseValidation: FastifyResponseValidation
   export { fastifyResponseValidation as default }
 }
