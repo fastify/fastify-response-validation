@@ -194,6 +194,42 @@ test('Should support media types', async t => {
   t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
 })
 
+test('Should support ref schema', async (t) => {
+  const fastify = Fastify()
+  await fastify.register(plugin)
+
+  fastify.addSchema({
+    $id: 'answerSchema',
+    type: 'object',
+    properties: {
+      answer: { type: 'number' }
+    }
+  })
+
+  fastify.route({
+    method: 'GET',
+    url: '/',
+    schema: {
+      response: {
+        '2xx': {
+          $ref: 'answerSchema'
+        }
+      }
+    },
+    handler: async (req, reply) => {
+      return { answer: 42 }
+    }
+  })
+
+  const response = await fastify.inject({
+    method: 'GET',
+    url: '/'
+  })
+
+  t.assert.strictEqual(response.statusCode, 200)
+  t.assert.deepStrictEqual(JSON.parse(response.payload), { answer: 42 })
+})
+
 test('Should check anyOf Schema', async t => {
   const fastify = Fastify()
   await fastify.register(plugin)
