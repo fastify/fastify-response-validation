@@ -52,11 +52,13 @@ function fastifyResponseValidation (fastify, opts, next) {
   function buildHook (schema, responseStatusCodeValidation) {
     const statusCodes = {}
     for (const originalCode in schema) {
-      // Internally we are going to treat status codes as lower-case strings to preserve compatibility
-      // with previous versions of this plugin allowing 4xx/5xx status codes to be defined as strings
-      // even though the OpenAPI spec requires them to be upper-case or the word 'default'.
-      // see: https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#responses-object
-      // see also: https://swagger.io/specification/#fixed-fields-14
+      /**
+       * Internally we are going to treat status codes as lower-case strings to preserve compatibility
+       * with previous versions of this plugin allowing 4xx/5xx status codes to be defined as strings
+       * even though the OpenAPI spec requires them to be upper-case or the word 'default'.
+       * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#responses-object}
+       * @see {@link https://swagger.io/specification/#fixed-fields-14}
+       */
       const statusCode = originalCode.toLowerCase()
       const responseSchema = schema[originalCode]
 
