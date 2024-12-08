@@ -1,5 +1,5 @@
-import { FastifyPluginCallback, RawServerBase, RawServerDefault } from "fastify";
-import Ajv, { Options as AjvOptions } from "ajv";
+import { FastifyPluginCallback, RawServerBase, RawServerDefault } from 'fastify'
+import Ajv, { Options as AjvOptions } from 'ajv'
 
 declare module 'fastify' {
   interface RouteShorthandOptions<RawServer extends RawServerBase = RawServerDefault> {
@@ -8,7 +8,7 @@ declare module 'fastify' {
   }
 }
 
-type FastifyResponseValidation = FastifyPluginCallback<fastifyResponseValidation.Options>;
+type FastifyResponseValidation = FastifyPluginCallback<fastifyResponseValidation.Options>
 
 declare namespace fastifyResponseValidation {
   export interface Options {
@@ -23,5 +23,5 @@ declare namespace fastifyResponseValidation {
   export { fastifyResponseValidation as default }
 }
 
-declare function fastifyResponseValidation(...params: Parameters<FastifyResponseValidation>): ReturnType<FastifyResponseValidation>
+declare function fastifyResponseValidation (...params: Parameters<FastifyResponseValidation>): ReturnType<FastifyResponseValidation>
 export = fastifyResponseValidation
