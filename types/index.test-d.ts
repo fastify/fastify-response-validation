@@ -1,19 +1,19 @@
 import fastify, {
   FastifyInstance,
-} from 'fastify';
-import plugin from '..';
-import Ajv from 'ajv';
-import Ajv2019 from "ajv/dist/2019";
-import Ajv2020 from "ajv/dist/2020";
+} from 'fastify'
+import plugin from '..'
+import Ajv from 'ajv'
+import Ajv2019 from 'ajv/dist/2019'
+import Ajv2020 from 'ajv/dist/2020'
 
-const app: FastifyInstance = fastify();
-app.register(plugin);
-app.register(plugin, {});
-app.register(plugin, { ajv: { coerceTypes: true } });
-app.register(plugin, { responseValidation: true });
-app.register(plugin, { responseValidation: false });
-app.register(plugin, { responseStatusCodeValidation: true });
-app.register(plugin, { responseStatusCodeValidation: false });
+const app: FastifyInstance = fastify()
+app.register(plugin)
+app.register(plugin, {})
+app.register(plugin, { ajv: { coerceTypes: true } })
+app.register(plugin, { responseValidation: true })
+app.register(plugin, { responseValidation: false })
+app.register(plugin, { responseStatusCodeValidation: true })
+app.register(plugin, { responseStatusCodeValidation: false })
 app.register(plugin, { ajv: { plugins: [require('ajv-formats')] } })
 app.register(plugin, { ajv: { plugins: [require('ajv-errors')] } })
 app.register(plugin, { ajv: { plugins: [[require('ajv-errors'), {}]] } })
