@@ -42,7 +42,7 @@ function fastifyResponseValidation (fastify, opts, next) {
 
   function onRoute (routeOpts) {
     if (routeOpts.responseValidation === false) return
-    if (routeOpts.schema && routeOpts.schema.response) {
+    if (routeOpts.schema?.response) {
       const responseStatusCodeValidation = routeOpts.responseStatusCodeValidation || opts.responseStatusCodeValidation || false
       routeOpts.preSerialization = routeOpts.preSerialization || []
       routeOpts.preSerialization.push(buildHook(routeOpts.schema.response, responseStatusCodeValidation))
