@@ -26,7 +26,7 @@ test('use ajv formats', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: 2.4 }
     }
   })
@@ -60,7 +60,7 @@ test('use ajv errors', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { foo: 24 }
     }
   })
@@ -148,7 +148,7 @@ test('use ajv formats with Ajv instance', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: 2.4 }
     }
   })
@@ -184,7 +184,7 @@ test('use ajv errors with Ajv instance', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { notAnAnswer: 24 }
     }
   })
@@ -217,7 +217,7 @@ test('use ajv formats with 2019 Ajv instance', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: 2.4 }
     }
   })
@@ -253,7 +253,7 @@ test('use ajv errors with 2019 Ajv instance', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { notAnAnswer: 24 }
     }
   })
@@ -286,7 +286,7 @@ test('use ajv formats with 2020 Ajv instance', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: 2.4 }
     }
   })
@@ -322,7 +322,7 @@ test('use ajv errors with 2019 Ajv instance', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { notAnAnswer: 24 }
     }
   })

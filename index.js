@@ -78,7 +78,7 @@ function fastifyResponseValidation (fastify, opts, next) {
 
     return preSerialization
 
-    function preSerialization (req, reply, payload, next) {
+    function preSerialization (_req, reply, payload, next) {
       let validate = statusCodes[reply.statusCode] || statusCodes[(reply.statusCode + '')[0] + 'xx'] || statusCodes.default
 
       if (responseStatusCodeValidation && validate === undefined) {

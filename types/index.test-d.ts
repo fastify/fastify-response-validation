@@ -36,7 +36,7 @@ app.route({
       }
     }
   },
-  handler: async (req, reply) => {
+  handler: async () => {
     return { answer: '42' }
   }
 })

@@ -18,7 +18,7 @@ app.get('/', {
       }
     }
   },
-  handler: (req, reply) => {
+  handler: () => {
     return { answer: '42' }
   }
 })

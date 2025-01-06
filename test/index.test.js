@@ -21,7 +21,7 @@ test('Should return a validation error', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -55,7 +55,7 @@ test('Should support shortcut schema syntax', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -91,7 +91,7 @@ test('Should check only the assigned status code', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -135,7 +135,7 @@ test('Should use response matching 5XX instead of default', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: 42 }
     }
   })
@@ -179,7 +179,7 @@ test('Should fallback to default response if nothing matches', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async (_req, reply) => {
       reply.status(500).send({ error_message: 'the answer is 42' })
     }
   })
@@ -216,7 +216,7 @@ test('Should check media types', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async (_req, reply) => {
       reply.header('Content-Type', 'application/not+json')
       return { answer: 42 }
     }
@@ -267,7 +267,7 @@ test('Should support media types', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async (_req, reply) => {
       reply.header('Content-Type', 'application/b+json')
       return { answer: 42 }
     }
@@ -303,7 +303,7 @@ test('Should check anyOf Schema', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -326,7 +326,7 @@ test('response validation is set, but no response schema given returns unvalidat
     method: 'GET',
     url: '/',
     schema: {},
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -357,7 +357,7 @@ test('Override default ajv options', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -389,7 +389,7 @@ test('Disable response validation for a specific route', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -420,7 +420,7 @@ test('Disable response validation for every route', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
@@ -452,7 +452,7 @@ test('Enable response status code validation for a specific route', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: 42 }
     }
   })
@@ -488,7 +488,7 @@ test('Enable response status code validation for every route', async t => {
         }
       }
     },
-    handler: async (req, reply) => {
+    handler: async () => {
       return { answer: '42' }
     }
   })
