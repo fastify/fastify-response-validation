@@ -48,7 +48,7 @@ app.inject({
 })
 ```
 
-Different content types responses are supported by `@fastify/response-validation`, `@fastify/swagger` and `fastify`. Please use `content` for the response otherwise Fastify itself will fail to compile the schema:
+Different content types responses are supported by `@fastify/response-validation`, `@fastify/swagger`, and `fastify`. Please use `content` for the response otherwise Fastify itself will fail to compile the schema:
 ```js
 {
   response: {
@@ -110,7 +110,7 @@ const ajv = new Ajv()
 await fastify.register(responseValidator, { ajv })
 ```
 
-By default the response validation is enabled on every route that has a response schema defined. If needed you can disable it all together with `responseValidation: false`:
+By default, the response validation is enabled on every route that has a response schema defined. If needed you can disable it all together with `responseValidation: false`:
 ```js
 import responseValidator from '@fastify/response-validation'
 
