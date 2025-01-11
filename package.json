@@ -1,6 +1,6 @@
 {
   "name": "@fastify/response-validation",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A simple plugin that enables response validation for Fastify.",
   "main": "index.js",
   "type": "commonjs",
