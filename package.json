@@ -11,7 +11,7 @@
   },
   "types": "types/index.d.ts",
   "devDependencies": {
-    "@types/node": "^25.0.3",
+    "@types/node": "^26.0.1",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
     "c8": "^11.0.0",
